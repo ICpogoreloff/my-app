@@ -5,6 +5,7 @@
       color="primary"
       dark
     >
+      <v-col>
       <v-btn
           class="ma-2"
           outlined
@@ -12,14 +13,13 @@
         <span class="mr-2">Добавить</span>
 
       </v-btn>
-
-      <v-spacer></v-spacer>
+      </v-col>
+      <v-col>
       <div class="d-flex align-center">
         <span v-once>Клик на Сотруднике - открывает форму сотрудника</span>
       </div>
-
+      </v-col>
     </v-app-bar>
-
     <v-main>
       <HelloWorld/>
     </v-main>
