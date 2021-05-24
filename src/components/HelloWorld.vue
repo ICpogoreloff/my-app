@@ -97,7 +97,7 @@ import { format, parseISO } from 'date-fns'
 
     computed: {
       computedDateFormattedMomentjs () {
-        return this.date ? moment(this.date).format('dddd, MMMM Do YYYY') : ''
+        return this.date ? moment(this.date).format('YYYY-MM-DDThh:mm:ssZ') : ''
       },
     },
   }
