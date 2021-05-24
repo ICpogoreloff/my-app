@@ -40,14 +40,29 @@
         @input="$v.pass_no.$touch()"
         @blur="$v.pass_no.$touch()"
     ></v-text-field>
-    <v-text-field
-        v-model="pass_dt"
-        :error-messages="nameErrors"
-        label="Дата паспорта"
-        required
-        @input="$v.pass_dt.$touch()"
-        @blur="$v.pass_dt.$touch()"
-    ></v-text-field>
+    <v-menu
+        v-model="menu1"
+        :close-on-content-click="false"
+        max-width="290"
+    >
+      <template v-slot:activator="{ on, attrs }">
+        <v-text-field
+            :value="computedDateFormattedMomentjs"
+            clearable
+            label="Дата выдачи"
+            readonly
+            v-bind="attrs"
+            v-on="on"
+            @click:clear="date = null"
+        ></v-text-field>
+      </template>
+      <v-date-picker
+          v-model="date"
+          @change="menu1 = false"
+          :first-day-of-week="1"
+          locale="ru-ru"
+      ></v-date-picker>
+    </v-menu>
     <v-col>
     <v-btn
         class="mr-4"
@@ -68,9 +83,24 @@
 </template>
 
 <script>
+import moment from 'moment'
+import { format, parseISO } from 'date-fns'
+
   export default {
     name: 'HelloWorld',
+    data: () => ({
+      // https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#string-arguments
+      date: format(parseISO(new Date().toISOString()), 'yyyy-MM-dd'),
+      menu1: false,
+      menu2: false,
+    }),
 
+    computed: {
+      computedDateFormattedMomentjs () {
+        return this.date ? moment(this.date).format('dddd, MMMM Do YYYY') : ''
+      },
+    },
   }
 </script>
+
 
