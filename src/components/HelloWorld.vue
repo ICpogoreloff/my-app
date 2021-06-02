@@ -4,9 +4,25 @@
   <v-container>
     <v-row>
       <v-col>
-      <p class="subheading font-weight-regular">
-        Здесь будет список сотрудников
-      </p>
+      <div>
+          <v-list
+              class="pa-2"
+              outlined
+              tile>
+            <v-list-item-group
+                v-model="selectedItem"
+                color="primary">
+              <v-list-item
+                  v-for="(item, empStore) in items"
+                  :key="empStore"
+              >
+            <v-list-item-content>
+              <v-list-item-title v-text="item.text"></v-list-item-title>
+            </v-list-item-content>
+              </v-list-item>
+            </v-list-item-group>
+          </v-list>
+      </div>
       </v-col>
       <v-divider
           vertical
@@ -41,13 +57,13 @@
         @blur="$v.pass_no.$touch()"
     ></v-text-field>
     <v-menu
-        v-model="menu1"
+        v-model="pass_dt"
         :close-on-content-click="false"
         max-width="290"
     >
       <template v-slot:activator="{ on, attrs }">
         <v-text-field
-            :value="computedDateFormattedMomentjs"
+            :value="computedDateMoment"
             clearable
             label="Дата выдачи"
             readonly
@@ -58,7 +74,7 @@
       </template>
       <v-date-picker
           v-model="date"
-          @change="menu1 = false"
+          @change="pass_dt = false"
           :first-day-of-week="1"
           locale="ru-ru"
       ></v-date-picker>
@@ -85,22 +101,56 @@
 <script>
 import moment from 'moment'
 import { format, parseISO } from 'date-fns'
+import _ from 'lodash'
+
 
   export default {
     name: 'HelloWorld',
+
     data: () => ({
+
       // https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#string-arguments
       date: format(parseISO(new Date().toISOString()), 'yyyy-MM-dd'),
-      menu1: false,
-      menu2: false,
+      pass_dt: false,
+      fio: '',
+      pass_no: '',
+      pass_ser: '',
+
+      selectedItem: 1,
+      items: [
+        { text: 'Test' },
+        { text: 'Test' },
+        { text: 'Test' },
+        { text: 'Test' },
+        { text: 'Test' },
+      ],
     }),
 
     computed: {
-      computedDateFormattedMomentjs () {
+      computedDateMoment () {
         return this.date ? moment(this.date).format('YYYY-MM-DDThh:mm:ssZ') : ''
       },
+
+      _() {
+        return _;
+      },
+
     },
+
+    methods: {
+      saveEmp () {
+      },
+      clear () {
+        this.fio = ''
+        this.pass_no = ''
+        this.pass_ser = ''
+        this.pass_dt = ''
+      },
+    },
+
   }
+
+
 </script>
 
 
