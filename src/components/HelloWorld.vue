@@ -29,32 +29,23 @@
       >
       </v-divider>
         <v-col>
-  <v-form>
+  <div>
     <v-text-field
         v-model="fio"
-        :error-messages="nameErrors"
         label="Фамилия Имя Отчество"
         required
-        @input="$v.fio.$touch()"
-        @blur="$v.fio.$touch()"
     ></v-text-field>
     <v-text-field
         v-model="pass_ser"
-        :error-messages="emailErrors"
         label="Номер паспорта"
         required
         :counter="4"
-        @input="$v.pass_ser.$touch()"
-        @blur="$v.pass_ser.$touch()"
     ></v-text-field>
     <v-text-field
         v-model="pass_no"
-        :error-messages="nameErrors"
         label="Серия паспорта"
         required
         :counter="6"
-        @input="$v.pass_no.$touch()"
-        @blur="$v.pass_no.$touch()"
     ></v-text-field>
     <v-menu
         v-model="pass_dt"
@@ -92,7 +83,7 @@
       Сохранить
     </v-btn>
     </v-col>
-  </v-form>
+  </div>
     </v-col>
     </v-row>
   </v-container>
@@ -130,11 +121,6 @@ import _ from 'lodash'
       computedDateMoment () {
         return this.date ? moment(this.date).format('YYYY-MM-DDThh:mm:ssZ') : ''
       },
-
-      _() {
-        return _;
-      },
-
     },
 
     methods: {
@@ -150,6 +136,7 @@ import _ from 'lodash'
 
   }
 
+console.log(_.isArray([1,2]))
 
 </script>
 

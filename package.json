@@ -11,6 +11,7 @@
     "core-js": "^3.6.5",
     "date-fns": "^2.21.3",
     "lodash": "^4.17.21",
+    "lodash.values": "^4.3.0",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",
     "vue": "^2.6.11",
