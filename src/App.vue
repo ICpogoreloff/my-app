@@ -18,6 +18,7 @@
       <div class="d-flex align-center">
         <span v-once>Клик на Сотруднике - открывает форму сотрудника</span>
       </div>
+
       </v-col>
     </v-app-bar>
     <v-main>
@@ -27,7 +28,7 @@
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+import HelloWorld from './components/HelloWorld'
 
 
 export default {
@@ -38,7 +39,36 @@ export default {
   },
 
   data: () => ({
-    //
+    empStorage:[],
+    newEmp:null
   }),
+
+  mounted() {
+
+    if(localStorage.getItem('empStorage')) {
+      try {
+        this.empStorage = JSON.parse(localStorage.getItem('empStorage'))
+      } catch(e) {
+        localStorage.removeItem('empStorage')
+      }
+    }
+  },
+  methods: {
+    addEmp() {
+      // ensure they actually typed something
+      if(!this.newCat) return
+      this.empStorage.push(this.newCat)
+      this.newCat = ''
+      this.saveEmp()
+    },
+    removeEmp(x) {
+      this.empStorage.splice(x,1)
+      this.saveEmp()
+    },
+    saveEmp() {
+      let parsed = JSON.stringify(this.empStorage)
+      localStorage.setItem('empStorage', parsed)
+    }
+  }
 }
 </script>

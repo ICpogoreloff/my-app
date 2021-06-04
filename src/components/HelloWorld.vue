@@ -10,14 +10,13 @@
               outlined
               tile>
             <v-list-item-group
-                v-model="selectedItem"
+                v-model="selectedEmp"
                 color="primary">
               <v-list-item
-                  v-for="(item, empStore) in items"
-                  :key="empStore"
+                  v-for="(empLS) in empStorage" :key="empLS"
               >
             <v-list-item-content>
-              <v-list-item-title v-text="item.text"></v-list-item-title>
+              <v-list-item-title vclass="empLS">{{empLS}}</v-list-item-title>
             </v-list-item-content>
               </v-list-item>
             </v-list-item-group>
@@ -73,17 +72,24 @@
     <v-col>
     <v-btn
         class="mr-4"
-        @click="clear"
+        @click="removeEmp(selectedEmp)"
     >
       Удалить
     </v-btn>
     <v-btn class="mr-4"
-           @click="saveEmp"
+           @click="addEmp"
     >
       Сохранить
     </v-btn>
     </v-col>
   </div>
+          <v-col>
+                <v-text-field
+                    v-model="newEmp"
+                    label="Временный ввод для localStorage"
+                    required
+                ></v-text-field>
+          </v-col>
     </v-col>
     </v-row>
   </v-container>
@@ -102,19 +108,15 @@ import _ from 'lodash'
 
       // https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#string-arguments
       date: format(parseISO(new Date().toISOString()), 'yyyy-MM-dd'),
+
       pass_dt: false,
       fio: '',
       pass_no: '',
       pass_ser: '',
 
-      selectedItem: 1,
-      items: [
-        { text: 'Test' },
-        { text: 'Test' },
-        { text: 'Test' },
-        { text: 'Test' },
-        { text: 'Test' },
-      ],
+      selectedEmp: 1,
+      empStorage:[],
+      newEmp:null
     }),
 
     computed: {
@@ -122,18 +124,41 @@ import _ from 'lodash'
         return this.date ? moment(this.date).format('YYYY-MM-DDThh:mm:ssZ') : ''
       },
     },
+    mounted() {
+
+      if(localStorage.getItem('empStorage')) {
+        try {
+          this.empStorage = JSON.parse(localStorage.getItem('empStorage'))
+        } catch(e) {
+          localStorage.removeItem('empStorage')
+        }
+      }
+    },
 
     methods: {
-      saveEmp () {
-      },
+
       clear () {
         this.fio = ''
         this.pass_no = ''
         this.pass_ser = ''
         this.pass_dt = ''
       },
+      addEmp() {
+        // ensure they actually typed something
+        if(!this.newEmp) return
+        this.empStorage.push(this.newEmp)
+        this.newEmp = ''
+        this.saveEmp()
+      },
+      removeEmp(x) {
+        this.empStorage.splice(x,1)
+        this.saveEmp()
+      },
+      saveEmp() {
+        let parsed = JSON.stringify(this.empStorage)
+        localStorage.setItem('empStorage', parsed)
+      }
     },
-
   }
 
 console.log(_.isArray([1,2]))
